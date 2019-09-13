@@ -1,0 +1,12 @@
+:global(.ant-comment-inner){
+    padding: 2px;
+}
+
+:global(.ant-comment){
+    border-bottom: 1px solid rgba(198,198,198,.5);
+    margin-bottom: 5px;
+}
+
+.last-comment{
+    border-bottom: none !important;
+}

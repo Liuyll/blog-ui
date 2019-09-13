@@ -1,0 +1,4 @@
+:global(.ant-title){
+    outline: none !important;
+    border: none;
+}

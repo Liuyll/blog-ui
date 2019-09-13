@@ -1,0 +1,10 @@
+:global(.ql-editor) {
+    min-height: 300px;
+    max-height: 900px;
+    width: 900px;
+}
+
+.ant-input {
+    border-width: 0px;
+    box-shadow: none !important;
+}
