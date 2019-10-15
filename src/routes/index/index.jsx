@@ -7,7 +7,7 @@ import { Route, Switch, withRouter } from 'dva/router'
 import axios from 'axios'
 import immutable from 'immutable'
 import cssStyle from './index.css'
-import {connect} from 'dva'
+import { connect } from 'dva'
 
 
 const qs = require('querystring')
@@ -29,8 +29,8 @@ const WrapSwitch = styled.div`
 `
 
 @withRouter
-@connect((state)=>({state}))
-export default class Index extends React.Component {
+@connect((state) => ({ state }))
+class Index extends React.Component {
     constructor(props) {
         super(props)
         axios.get('/api/list').then(resp => {
@@ -41,8 +41,8 @@ export default class Index extends React.Component {
             else console.log(resp)
 
             props.dispatch({
-                type:'data/changeMenus',
-                payload:resp.data
+                type: 'data/changeMenus',
+                payload: resp.data
             })
         })
 
@@ -123,7 +123,7 @@ export default class Index extends React.Component {
                   })
               }
               this.setState({
-                  modal:this.state.modal.set('visible',false)
+                  modal: this.state.modal.set('visible',false)
               })
           })
   }
@@ -135,12 +135,12 @@ export default class Index extends React.Component {
       })
   }
 
-  handleSelect = ({key}) => {
+  handleSelect = ({ key }) => {
       try{
           this.props.history.push({
-              pathname:`/article/list`,
-              search:qs.encode({
-                  id:key
+              pathname: `/article/list`,
+              search: qs.encode({
+                  id: key
               })
           })
       }catch(e){
@@ -150,7 +150,7 @@ export default class Index extends React.Component {
 
   render() {
       const MenuConfig = {
-          onClick:this.handleSelect
+          onClick: this.handleSelect
       }
 
       const TreeSelectConfig = {
@@ -224,3 +224,5 @@ export default class Index extends React.Component {
       )
   }
 }
+
+export default Index

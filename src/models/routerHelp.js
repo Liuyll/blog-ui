@@ -14,9 +14,9 @@ export default {
             history.listen((location) => {
                 // console.log(location.pathname)
                 dispatch({
-                    type:'comparisonBeforeAndAfterPath',
-                    payload:{
-                        currentURL:location
+                    type: 'comparisonBeforeAndAfterPath',
+                    payload: {
+                        currentURL: location
                     }
                 }).then((data) => {
                     if(!data){
@@ -52,18 +52,18 @@ export default {
 
     reducers: {
         autoChangeLastURL(state) {
-            return {...state, ... { lastURL: state.currentURL } }
+            return { ...state, ... { lastURL: state.currentURL } }
         },
         changeURL(state, { payload }) {
-            return {...state, ...payload }
+            return { ...state, ...payload }
         },
         changeRedirectState(state, { payload }) {
-            return {...state, ... { shouldRedirect: payload } }
+            return { ...state, ... { shouldRedirect: payload } }
         }
     },
 
     effects: {
-        * comparisonBeforeAndAfterPath( { payload:{currentURL=''} },{select}){
+        * comparisonBeforeAndAfterPath( { payload: { currentURL='' } },{ select }){
             const oldURL = yield select((state) => state.routerHelp.lastURL)
             return oldURL == currentURL
         },

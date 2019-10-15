@@ -1,7 +1,7 @@
 import dva from 'dva'
 import axios from 'axios'
 import globalState from './models/state'
-import {message} from 'antd'
+import { message } from 'antd'
 // 1. Initialize
 const app = dva()
 

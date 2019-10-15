@@ -4,19 +4,21 @@ import IndexPage from './routes/index/index.jsx'
 import HeadIndex from './components/head/index'
 import RenderError from './components/HandleError'
 import AsyncComponent from './components/AsyncComponent'
+// import GraphqlProvider from './utils/request/graphql'
 // import Chat from './routes/chat'
 // import Loadable from 'react-loadable'
 
-const AsyncRegister = AsyncComponent(()=>import('./routes/login.jsx'))
-const AsyncAdd = AsyncComponent(()=>import('./routes/add.jsx'))
+const AsyncRegister = AsyncComponent(() => import('./routes/login.jsx'))
+const AsyncAdd = AsyncComponent(() => import('./routes/add.jsx'))
 const AsyncArticleList = AsyncComponent(() => import('./routes/article/index'))
 const AsyncArticleContent = AsyncComponent(() => import('./routes/article/detail'))
+
 // const AsyncArticleList1 = (() => import('./routes/article/index'))
 function RouterConfig({ history }) {
     return (
         <Router history={history}>
             <RenderError>
-        
+                {/* <GraphqlProvider> */}
                 <Link to="/register">toregister</Link>
                 <HeadIndex></HeadIndex>
                 <IndexPage></IndexPage>
@@ -28,7 +30,7 @@ function RouterConfig({ history }) {
                     <Route path="/article/add" component={AsyncAdd}></Route>
                     <Route path="/article/:id" exact component={AsyncArticleContent}></Route>
                 </Switch>
-
+                {/* </GraphqlProvider> */}
             </RenderError>
         </Router>
     )

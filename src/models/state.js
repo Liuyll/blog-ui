@@ -21,15 +21,15 @@ export default {
                     }
                 }).then((resp) => {
                     var payload = resp.data
-                    console.log(payload)
+                    // console.log(payload)
                     if (payload.state == 'login') {
                         dispatch({
                             type: 'changeLoginState',
                             payload: true
                         })
                         dispatch({
-                            type:'changeAccountId',
-                            payload:payload.id
+                            type: 'changeAccountId',
+                            payload: payload.id
                         })
                     }
                 })

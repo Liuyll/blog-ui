@@ -62,7 +62,7 @@ const SendPicPreview = styled.div`
 
 
 @connect(({ globalState }) => ({ globalState }))
-export default class ChatRoomUI extends React.Component {
+class ChatRoomUI extends React.Component {
     constructor(props) {
         super(props)
 
@@ -297,3 +297,5 @@ export default class ChatRoomUI extends React.Component {
         )
     }
 }
+
+export default ChatRoomUI

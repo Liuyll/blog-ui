@@ -3,7 +3,7 @@ import { message } from 'antd'
 import {Redirect, withRouter} from 'dva/router' // eslint-disable-line
 
 @withRouter
-export default class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React.Component {
   state = {
       error: false,
   }
@@ -24,10 +24,12 @@ export default class ErrorBoundary extends React.Component {
               // this.props.history.push('/')
               // ctx.props.history.push('/')
               // return <Redirect to={'/'}></Redirect>
-              return <div style={{fontSize:'400px'}}>出错啦</div>
+              return <div style={{ fontSize: '400px' }}>出错啦</div>
           } else return ctx.props.children
       }
 
       return <Render/>
   }
 }
+
+export default ErrorBoundary

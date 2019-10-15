@@ -7,7 +7,7 @@ const LikeComponent = styled.div`
     display:flex;
     flex-direction:column;
 `
-var cancelToken = axios.CancelToken
+var cancelToken = axios.CancelToken // eslint-disable-line
 var cancel
 
 export default function Like(props) {

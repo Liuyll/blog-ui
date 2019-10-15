@@ -10,30 +10,29 @@ const WrapArticle = styled.div`
 export default class _ extends React.Component {
     constructor(props) {
         super(props)
-        console.log(props.match.params.id)
         axios.get(`/api/article/${props.match.params.id}`).then((resp) => {
             this.setState({
-                content: resp.data
+                infos: resp.data,
+                // author: resp.author._id
             })
             return null
         })
 
         this.state = {
-            content: null
+            infos: null
         }
     }
 
     render() {
-        if(this.state.content){
+        if(this.state.infos){
             const articleConfig = {
-                text:this.state.content.content,
-                judge:this.state.content.judge,
-                addition:this.state.content.addition
+                text: this.state.infos.infos,
+                judge: this.state.infos.judge,
+                addition: this.state.infos.addition
             }
             return (
                 <WrapArticle>
-                    <Article {...articleConfig}></Article>
-                    
+                    <Article {...articleConfig} id={this.props.match.params.id} author={this.state.infos.author._id}></Article>
                 </WrapArticle>
             )
         }

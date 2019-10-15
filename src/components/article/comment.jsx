@@ -4,6 +4,7 @@ import moment from 'moment'
 import immutable from 'immutable'
 import styled from 'styled-components'
 import styles from './comment.css'
+import { graphql } from 'apollo-boost'
 
 const CommentWrap = styled.div`
     width: 800px;
@@ -47,6 +48,8 @@ export default class ArticleComment extends React.Component {
         this.imtest1 = immutable.Map({
             a: 1,
         })
+
+        // axios.get()
     }
 
     handleChange = (index, i) => {

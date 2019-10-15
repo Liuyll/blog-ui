@@ -1,8 +1,8 @@
-import React,{useState} from 'react'
+import React,{ useState } from 'react'
 import { Link,withRouter } from 'dva/router'
-import {connect} from 'dva'
-import styled,{keyframes} from 'styled-components'
-import {Dropdown, Avatar, Badge, Menu, Modal} from 'antd'
+import { connect } from 'dva'
+import styled,{ keyframes } from 'styled-components'
+import { Dropdown, Avatar, Badge, Menu, Modal } from 'antd'
 import _ from 'lodash'
 import Chat from '../../routes/chat/index'
 import redirectLogin from '../help/redirectLogin'
@@ -13,7 +13,7 @@ const StyledLink = styled(Link)`
 `
 
 var currentKeyframes = {
-    head:keyframes`
+    head: keyframes`
         0%{
             top:-180px;
         }
@@ -63,7 +63,7 @@ function Head(props) {
     var lists = {
         main: '/',
         add: '/article/add',
-        article:'/article/list',
+        article: '/article/list',
         info: '/infos',
         chat: '/chat'
     }
@@ -96,10 +96,10 @@ function Head(props) {
         }
     }
     function handleLoginOut(){
-        const {dispatch} = props
+        const { dispatch } = props
         dispatch({
-            type:'globalState/changeLoginState',
-            payload:false
+            type: 'globalState/changeLoginState',
+            payload: false
         })
     }
 
@@ -108,13 +108,13 @@ function Head(props) {
     }
 
     const ModalConfig = {
-        maskClosable:false,
-        width:'700px',
-        visible:visible,
-        onCancel:handleCancel,
-        destroyOnClose:true,
-        footer:null,
-        centerer:true
+        maskClosable: false,
+        width: '700px',
+        visible: visible,
+        onCancel: handleCancel,
+        destroyOnClose: true,
+        footer: null,
+        centerer: true
     }
     return (
         <HeadWrap>
@@ -125,7 +125,7 @@ function Head(props) {
                 </ListWrap>
             </Wrap>
             <AccountState>
-                {props.globalState.isLogin ? <div style={{display:'flex',justifyContent:'space-around',width:'100%'}}>
+                {props.globalState.isLogin ? <div style={{ display: 'flex',justifyContent: 'space-around',width: '100%' }}>
                     <div>
                         <Dropdown overlay={menu}>
                             <Badge count={1}>
@@ -134,7 +134,7 @@ function Head(props) {
                         </Dropdown>
                     </div>
                     <div>
-                        <a style={{color:'#8DE0FF'}} onClick={handleLoginOut}>login out</a>
+                        <a style={{ color: '#8DE0FF' }} onClick={handleLoginOut}>login out</a>
                     </div>
                 </div>
                     : <Link to={"/register"}>sign up</Link>
@@ -149,4 +149,4 @@ function Head(props) {
     )
 }
 
-export default withRouter(connect(({globalState})=>({globalState}))(Head))
+export default withRouter(connect(({ globalState }) => ({ globalState }))(Head))

@@ -14,8 +14,8 @@ const WrapEdit = styled.div`
     margin-left: ${window.wrapWidth};
     /* eslint-enable */
 `
-@connect(({ data, globalState }) => ({ data, globalState }))
-export default class Add extends React.Component {
+@connect(({ data, globalState, routerHelp }) => ({ data, globalState, routerHelp }))
+class Add extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -42,7 +42,6 @@ export default class Add extends React.Component {
         var authorId = this.props.globalState.accountId
         var type = this.state.type
 
-        console.log(authorId)
         var postObj = {
             content,
             title,
@@ -52,12 +51,12 @@ export default class Add extends React.Component {
         }
 
         axios.post('/api/article/', postObj).then(resp => {
-            var result = checkstatus(resp.status)
-
+            var result = checkstatus(resp)
+            
             if (result) {
-                if (this.props.location.state) {
-                    var redirectURL = this.props.location.state.from
-                    this.props.history.push(redirectURL)
+                let lasturl = this.props.routerHelp.lastURL
+                if (lasturl) {
+                    this.props.history.push(lasturl)
                 }
             }
         })
@@ -94,3 +93,5 @@ export default class Add extends React.Component {
         )
     }
 }
+
+export default Add

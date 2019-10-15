@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react'
+import React, { useEffect,useState } from 'react'
 import axios from 'axios'
 import connect from 'dva'
 
@@ -13,10 +13,10 @@ function useData(url,method,payload,config={}){
     let paramsKey =  (method == 'GET' ? 'params' : 'body')
 
     axios(url,{
-        method:method,
-        [paramsKey]:payload,
+        method: method,
+        [paramsKey]: payload,
         ...config,
-        cancelToken:function cancel_(c){
+        cancelToken: function cancel_(c){
             cancel = c
         }
     }).then((resp)={
@@ -24,4 +24,4 @@ function useData(url,method,payload,config={}){
     })
 }
 
-export default connect(({apiHelp})=>({apiHelp}))(useData)
+export default connect(({ apiHelp }) => ({ apiHelp }))(useData)

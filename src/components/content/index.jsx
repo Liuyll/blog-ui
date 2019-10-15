@@ -1,12 +1,12 @@
 import React from 'react'
 import { Menu, Icon } from 'antd' // eslint-disable-line
-import { connect } from 'tls'
+import { connect } from 'dva'
 
 const { SubMenu } = Menu
 const _ = require('lodash')
 
-@connect(({routerHelp})=>({routerHelp}))
-export default class Index extends React.Component {
+
+export default @connect(({ routerHelp }) => ({ routerHelp })) class Index extends React.Component {
     constructor(props) {
         super(props)
         this.state = [
@@ -55,7 +55,7 @@ export default class Index extends React.Component {
 
         return (
         <>
-            <Menu style={{width:400}} mode="vertical" onClick={()=>{}}>
+            <Menu style={{ width: 400 }} mode="vertical" onClick={() => {}}>
                 {SubMenus}
             </Menu>
         </>

@@ -19,8 +19,21 @@ rules:
     - never
   no-use-before-define:
     - error
-  no-console: off
   react/prop-types: false
   react/jsx-key: false
+  arrow-spacing:
+    - 1
+    - before: true
+      after: true
+  no-console:
+    - error
+    - { allow: ["error"] }
+  object-curly-spacing:
+    - warn
+    - always
+  key-spacing:
+    - warn
+    - afterColon: true
+  react/display-name: false
 
     
