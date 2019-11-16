@@ -3,31 +3,32 @@ import axios from 'axios'
 
 export default async function Login({
     account,
-    password
+    password,
+    code
 }) {
     try {
-        var resp = await axios.post('api/login', { account, password })
-        // var result = checkStatus(resp)
-
-        // if (result) {
-        //     var auth = resp.headers['authorization']
-        
-        //     if (auth) {
-                
-        //         console.log('auth get')
-        //         localStorage.setItem('token', auth)// eslint-disable-line
-        //         return true
-        //     } else {
-        //         var data = resp.data
-        //         if (data.type === 'success') {
-        //             return true
-        //         } else {
-        //             return false
-        //         }
-        //     }
-        // }
+        var resp = await axios({
+            url: '/api/login',
+            method: 'post',
+            data: {
+                account,
+                password
+            },
+            headers: {
+                ... code && { 'x-limit': code }
+            }
+        })
         var data = resp.data
-        console.log(data)
+
+        const verifyCode = resp.headers['x-limit']
+    
+        if(verifyCode){
+            if(data && data.message == 'verifyCode error'){
+                return `VerifyCodeError ${verifyCode}`
+            }
+            return `ErrorAndVerify ${verifyCode}`
+        }
+    
         if (data.type === 'success') {
             return data.accountId
         } else {

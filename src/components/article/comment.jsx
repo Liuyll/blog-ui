@@ -1,55 +1,77 @@
 import React from 'react'
 import { Comment, Icon, Tooltip } from 'antd'
 import moment from 'moment'
-import immutable from 'immutable'
 import styled from 'styled-components'
 import styles from './comment.css'
-import { graphql } from 'apollo-boost'
+import _ from 'lodash'
 
 const CommentWrap = styled.div`
     width: 800px;
-    border: 1px solid #c6c6c6;
+    border-top: 1px solid #c6c6c6;
     padding: 10px;
     border-radius: 2px;
     margin-top: 40px;
 `
+const NoBorderComment = styled(Comment)`
+    border:0
+`
 
-export default class ArticleComment extends React.Component {
+class ArticleComment extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             comments: [
                 {
-                    author: 'Liuyl',
-                    comment: '这个文章写得非常好',
-                    action: null,
-                    likes: 0,
-                    dislikes: 0,
-                    datatime: '1564282184259',
-                },
-                {
                     author: 'Liuyl1',
-                    comment: '这个文章写得非常好',
+                    other: 'Liuyl',
+                    content: '这个文章写得非常好',
                     action: null,
                     likes: 0,
                     dislikes: 0,
-                    datatime: '1564262884259',
-                },
-                {
-                    author: 'Liuyl',
-                    comment: '这个文章写得非常好',
-                    action: null,
-                    likes: 0,
-                    dislikes: 0,
-                    datatime: '1564282884259',
-                },
+                    createAt: '1564282184259',
+                }
             ],
         }
-        this.imtest1 = immutable.Map({
-            a: 1,
-        })
+        
+        // this.state.comments = this.handleNestComment(this.state.comments)
+        
+    }
 
-        // axios.get()
+    UNSAFE_componentWillReceiveProps(nextProps){
+        if('comments' in nextProps){
+            if(Array.isArray(nextProps['comments'])){
+                this.setState({
+                    comments: nextProps['comments']
+                })
+            }
+        }
+    }
+
+    handleNestComment = (comments) => {
+        const commentMap = {}
+        let _comments = comments
+        _comments = _.sortBy(_comments,(o) => o.createAt)
+        _comments.forEach((comment,index) => {
+            if(!comment.nest) comment.nest = []
+            if(comment.other !== this.props.articleAuthor){
+                // 按照时间进行排序的,不可能回复的other是不存在的
+                let i
+                i = commentMap[comment.other]
+      
+                _comments[i].nest.push(comment)
+                _comments.splice(index,1)
+                if(commentMap[comment.author] == undefined){
+                    commentMap[comment.author] = index
+                }
+            }
+            
+            else {
+                if(commentMap[comment.author] == undefined){
+                    commentMap[comment.author] = index
+                }
+            }
+        })
+        return _comments
     }
 
     handleChange = (index, i) => {
@@ -107,7 +129,7 @@ export default class ArticleComment extends React.Component {
     }
 
     render() {
-        const action = i => [
+        const action = (i,v) => [
             <span key='1'>
                 <Tooltip title="like">
                     <Icon
@@ -140,33 +162,54 @@ export default class ArticleComment extends React.Component {
                     {this.state.comments[i].dislikes}
                 </span>
             </span>,
-            <span key='3' onClick={this.props.judgeArticle}>评论他</span>,
+            <span key="3" onClick={() => this.props.judgeOther(v.authorId)}>评论他</span>,
         ]
+
+        const commentOptions = (v,i) => ({
+            key: i,
+            actions: action(i,v),
+            author: <a>{v.author}</a>,
+            content: <p>{v.content}</p>,
+            datetime: moment(parseInt(v.createAt)).fromNow()
+        })
+    
+
         return (
-            <CommentWrap>
+            <CommentWrap className={this.props.className}>
                 <div
                     style={{
                         padding: '10px',
-                        borderBottom: '1px solid rgba(198,198,198,.2)',
+                        borderBottom: 0,
                     }}
                 >
                     <strong>{this.state.comments.length}条评论</strong>
                 </div>
-                {this.state.comments.map((v, i) => (
-                    <Comment
-                        className={
-                            i == this.state.comments.length - 1
-                                ? styles['last-comment']
-                                : ''
-                        }
-                        key={i}
-                        actions={action(i)}
-                        author={<a>{v.author}</a>}
-                        content={<p>{v.comment}</p>}
-                        datetime={moment(v.datatime).fromNow()}
-                    />
-                ))}
+                {this.state.comments.map((v, i) => {
+                    if(!this.props.isMore && i > 1) return null 
+                    return (
+                        <NoBorderComment
+                            style={{ border: 0 }}
+                            className={
+                                i == this.state.comments.length - 1
+                                    ? styles['last-comment']
+                                    : ''
+                            }
+                            {...commentOptions(v,i)}
+                            key={i}
+                        >
+                            {(v.nest && v.nest.length != 0 && this.props.isMore) ? v.nest.map((v,i) => <Comment 
+                                {...commentOptions(v,i)}
+                            />) : null}
+                        </NoBorderComment>
+                    )}
+                )}
             </CommentWrap>
         )
     }
 }
+
+ArticleComment.defaultProps = {
+    articleAuthor: 'Liuyl'
+}
+
+export default ArticleComment

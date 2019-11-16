@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import { Link,withRouter } from 'dva/router'
 import { connect } from 'dva'
 import styled,{ keyframes } from 'styled-components'
@@ -101,11 +101,14 @@ function Head(props) {
             type: 'globalState/changeLoginState',
             payload: false
         })
+        localStorage.removeItem('token') // eslint-disable-line
+        props.history.push('/')
     }
 
     function handleCancel(){
         setVisible(false)
     }
+
 
     const ModalConfig = {
         maskClosable: false,

@@ -12,3 +12,6 @@
 # misc
 .DS_Store
 npm-debug.log*
+
+# ignore logs
+*.log

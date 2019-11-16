@@ -1,5 +1,5 @@
 // import axios from 'axios'
-import login from '../utils/request/login'
+import loginFunc from '../utils/request/login'
 import axios from 'axios'
 
 export default {
@@ -21,7 +21,6 @@ export default {
                     }
                 }).then((resp) => {
                     var payload = resp.data
-                    // console.log(payload)
                     if (payload.state == 'login') {
                         dispatch({
                             type: 'changeLoginState',
@@ -32,6 +31,10 @@ export default {
                             payload: payload.id
                         })
                     }
+                    else {
+                        // eslint-disable-next-line
+                        localStorage.removeItem('token')
+                    }
                 })
             }
         }
@@ -39,8 +42,20 @@ export default {
 
     effects: {
         * login({ payload }, { call, put }) {
-            const loginresult = yield call(login, payload)
-            if (loginresult) {
+            const loginResult = yield call(loginFunc, payload)
+            
+            if(typeof loginResult == 'string' && loginResult.indexOf('ErrorAndVerify') !== -1){
+                let code = loginResult.split(' ')[1]
+                payload.callback('errorAndVerify',{
+                    code
+                })
+            } else if (typeof loginResult == 'string' && loginResult.indexOf('VerifyCodeError') !== -1){
+                let code = loginResult.split(' ')[1]
+                payload.callback('errorAndVerify',{
+                    code,
+                    isMessage: true
+                })
+            } else if (loginResult) {
                 yield put({
                     type: 'changeLoginState',
                     payload: true
@@ -51,7 +66,7 @@ export default {
                 })
                 yield put({
                     type: 'changeAccountId',
-                    payload: loginresult
+                    payload: loginResult
                 })
                 payload.callback('success')
             } else {
@@ -62,7 +77,7 @@ export default {
 
     reducers: {
         changeLoginState(state, action) {
-            return Object.assign(state, { isLogin: action.payload })
+            return Object.assign({},state, { isLogin: action.payload })
         },
         changeAccount(state, { payload }) {
             return { ...state, ... { account: payload } }

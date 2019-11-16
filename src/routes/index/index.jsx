@@ -20,12 +20,7 @@ const WrapMenu = styled.div`
   left: 0;
   top: 20px;
   width: 400px;
-`
-
-const WrapArticle = styled.div``
-
-const WrapSwitch = styled.div`
-  margin-left: 400px;
+  height:${props => props.height ? props.height + 'px' : '100%'}
 `
 
 @withRouter
@@ -180,16 +175,12 @@ class Index extends React.Component {
           )
       })
 
-      const Index = function() {
-          return (
-              <WrapArticle>
-                  <EditIndex />
-              </WrapArticle>
-          )
-      }
+      // eslint-disable-next-line
+      const ScreenHeight = window.innerHeight
+
       return (
       <>
-        <WrapMenu>
+        <WrapMenu height={ScreenHeight}>
             <Menu style={{ width: 300 }} mode="vertical" {...MenuConfig}>
                 {SubMenus}
             </Menu>
@@ -199,12 +190,6 @@ class Index extends React.Component {
                 </Button>
             </div>
         </WrapMenu>
-
-        <WrapSwitch>
-            <Switch>
-                <Route path="/" component={Index} exact />
-            </Switch>
-        </WrapSwitch>
 
         <Modal {...ModalConfig}>
             <div className={cssStyle.inputWrap}>

@@ -1,9 +1,14 @@
+import './ReactotronConfig'
 import dva from 'dva'
 import axios from 'axios'
-import globalState from './models/state'
 import { message } from 'antd'
+import moment from 'moment'
+import { browserHistory } from 'dva/router'
 // 1. Initialize
-const app = dva()
+// TODO:要引入histroy库来修复 browserHistory无效的bug
+const app = dva({
+    history: browserHistory
+})
 
 // 2. Plugins
 // app.use({});
@@ -11,15 +16,18 @@ const app = dva()
 //global data
 window.wrapWidth = "680px" // eslint-disable-line
 
+// options npm init
+moment.locale('zh-cn')
+
 axios.interceptors.request.use(function(config) {
-    if(globalState.state.isLogin){
-        var token
-        //take add
-        if ((token = localStorage.getItem('token'))) config.headers.Authorization = token // eslint-disable-line 
+    var token
+    // eslint-disable-next-line 
+    if ((token = localStorage.getItem('token'))) {
+        config.headers.Authorization = token 
     }
     
     config.validateStatus = function(status){
-        return status >= 200 && status <400
+        return status >= 200 && status < 400
     }
 
     return config

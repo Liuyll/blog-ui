@@ -35,5 +35,7 @@ rules:
     - warn
     - afterColon: true
   react/display-name: false
+  space-infix-ops:
+    - warn
 
     

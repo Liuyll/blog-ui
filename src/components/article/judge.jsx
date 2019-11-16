@@ -38,8 +38,8 @@ export default function JudgeQuill(props){
 
     let submitJudge = () => {
         let parentCB
-        if(props.submitJudge){
-            parentCB = props.submitJudge
+        if(props.submitJudgeSuccessCb){
+            parentCB = props.submitJudgeSuccessCb
         }
         axios.post('/api/article/judge',{
             article: props.article,
@@ -47,9 +47,24 @@ export default function JudgeQuill(props){
             author: props.author,
             other: props.other         
         }).then((resp) => {
-            if(parentCB) parentCB()
+            if(resp.data && resp.data.type == 'success'){
+                if(parentCB) parentCB()
+            }
         })
     }
+
+    // eslint-disable-next-line
+    let handleSubmitChange = () => { 
+        const infos = {
+            author: props.author,
+            other: props.other,
+            content: judgeContent,
+            article: props.article
+        }
+        const submitJudge = props.submitJudge
+        return submitJudge(infos)
+    }
+    
     return (
         <Wrap>
             <h3>Judge</h3>

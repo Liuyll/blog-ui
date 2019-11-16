@@ -11,9 +11,9 @@ export default function AsyncComponent(component) {
         }
         
         async componentDidMount() {
-            var {default:rComponent} = await component()            
+            var { default: rComponent } = await component()            
             this.setState({
-                reallyComponent:rComponent
+                reallyComponent: rComponent
             })
         }
 
